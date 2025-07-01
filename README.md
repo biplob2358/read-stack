@@ -17,6 +17,7 @@ export default tseslint.config([
   {
     files: ['**/*.{ts,tsx}'],
     extends: [
+      
       // Other configs...
 
       // Remove tseslint.configs.recommended and replace with this
