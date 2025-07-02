@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export interface IBorrow {
   _id: string;
   book: string;
@@ -8,6 +9,8 @@ export interface IBorrow {
 }
 
 export interface IBorrowSummary {
+  book: any;
+  totalQuantity: any;
   bookId: string;
   title: string;
   isbn: string;

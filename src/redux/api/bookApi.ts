@@ -8,10 +8,16 @@ export const bookApi = baseApi.injectEndpoints({
       { page: number; limit: number }
     >({
       query: ({ page, limit }) => `books?page=${page}&limit=${limit}`,
+      providesTags: ["Books"],
     }),
 
     getBook: builder.query<IBook, string>({
       query: (id) => `books/${id}`,
+      transformResponse: (response: {
+        success: boolean;
+        message: string;
+        data: IBook;
+      }) => response.data,
     }),
     createBook: builder.mutation<IBook, Partial<IBook>>({
       query: (book) => ({

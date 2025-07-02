@@ -3,6 +3,8 @@ import App from "../App";
 import Books from "../pages/Books";
 import CreateBook from "../pages/CreateBook";
 import BorrowSummary from "../pages/BorrowSummary";
+import CreateBorrow from "../pages/CreateBorrow";
+import Home from "../pages/Home";
 
 const router = createBrowserRouter([
   {
@@ -11,7 +13,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        Component: Books,
+        Component: Home,
       },
       {
         index: true,
@@ -25,6 +27,14 @@ const router = createBrowserRouter([
       {
         path: "borrow-summary",
         Component: BorrowSummary,
+      },
+      {
+        path: "edit-book/:id",
+        Component: Books,
+      },
+      {
+        path: "borrow/:bookId",
+        Component: CreateBorrow,
       },
     ],
   },
