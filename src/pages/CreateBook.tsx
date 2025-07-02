@@ -21,11 +21,20 @@ export default function CreateBook() {
   const [createBook, { isLoading }] = useCreateBookMutation();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, type, checked } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
+    const { name, value, checked } = e.target;
+
+    if (name === "available") {
+      setFormData((prev) => ({
+        ...prev,
+        available: checked,
+        copies: checked ? prev.copies : "0", // if unchecked, set copies to "0"
+      }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -110,6 +119,7 @@ export default function CreateBook() {
               value={formData.copies}
               onChange={handleChange}
               min={0}
+              disabled={!formData.available}
             />
           </div>
 

@@ -42,7 +42,7 @@ const BooksTable = () => {
   if (error) return <p className="text-red-500 text-center mt-10">Failed to load books.</p>;
 
   return (
-    <div className="p-4">
+    <div className="p-4 min-h-screen container mx-auto">
       <h2 className="text-2xl font-bold mb-4">📚 All Books</h2>
 
       <div className="w-full overflow-x-auto">

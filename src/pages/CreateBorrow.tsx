@@ -7,7 +7,6 @@ import { Skeleton } from "../components/ui/skeleton";
 import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
 
-
 const CreateBorrow = () => {
   const { bookId } = useParams<{ bookId: string }>();
   const navigate = useNavigate();
@@ -56,75 +55,77 @@ const CreateBorrow = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto p-6 mt-10 bg-white rounded shadow">
-      <h1 className="text-2xl font-semibold mb-4">Borrow Book</h1>
+    <section className="p-4 min-h-screen container mx-auto">
+      <div className="max-w-md mx-auto p-6 mt-10 bg-white rounded shadow ">
+        <h1 className="text-2xl font-semibold mb-4">Borrow Book</h1>
 
-      {bookLoading ? (
-        <>
-          <Skeleton className="h-8 w-full mb-3" />
-          <Skeleton className="h-8 w-full" />
-        </>
-      ) : bookError ? (
-        <p className="text-red-600">Failed to load book data.</p>
-      ) : book?.copies === 0 ? (
-        <p className="text-red-600 font-semibold">
-          This book is not available for borrowing.
-        </p>
-      ) : (
-        <>
-          <div className="mb-4">
-            <label htmlFor="quantity" className="block font-medium mb-1">
-              Quantity (Available: {book?.copies})
-            </label>
-            <Input
-              id="quantity"
-              type="number"
-              min={1}
-              max={book?.copies}
-              value={quantity}
-              onChange={(e) => setQuantity(Number(e.target.value))}
-              disabled={isBorrowing}
-            />
-          </div>
+        {bookLoading ? (
+          <>
+            <Skeleton className="h-8 w-full mb-3" />
+            <Skeleton className="h-8 w-full" />
+          </>
+        ) : bookError ? (
+          <p className="text-red-600">Failed to load book data.</p>
+        ) : book?.copies === 0 ? (
+          <p className="text-red-600 font-semibold">
+            This book is not available for borrowing.
+          </p>
+        ) : (
+          <>
+            <div className="mb-4">
+              <label htmlFor="quantity" className="block font-medium mb-1">
+                Quantity (Available: {book?.copies})
+              </label>
+              <Input
+                id="quantity"
+                type="number"
+                min={1}
+                max={book?.copies}
+                value={quantity}
+                onChange={(e) => setQuantity(Number(e.target.value))}
+                disabled={isBorrowing}
+              />
+            </div>
 
-          <div className="mb-6">
-            <label htmlFor="dueDate" className="block font-medium mb-1">
-              Due Date
-            </label>
-            <Input
-              id="dueDate"
-              type="date"
-              value={dueDate}
-              onChange={(e) => setDueDate(e.target.value)}
-              disabled={isBorrowing}
-            />
-          </div>
+            <div className="mb-6">
+              <label htmlFor="dueDate" className="block font-medium mb-1">
+                Due Date
+              </label>
+              <Input
+                id="dueDate"
+                type="date"
+                value={dueDate}
+                onChange={(e) => setDueDate(e.target.value)}
+                disabled={isBorrowing}
+              />
+            </div>
 
-          <div className="flex space-x-3">
-            <Button
-              onClick={handleSubmit}
-              disabled={
-                isBorrowing ||
-                !book ||
-                quantity <= 0 ||
-                !dueDate ||
-                book?.copies === 0
-              }
-              className="bg-blue-600 hover:bg-blue-700 text-white"
-            >
-              {isBorrowing ? "Borrowing..." : "Borrow"}
-            </Button>
-            <Button
-              variant="ghost"
-              onClick={() => navigate(-1)}
-              disabled={isBorrowing}
-            >
-              Cancel
-            </Button>
-          </div>
-        </>
-      )}
-    </div>
+            <div className="flex space-x-3">
+              <Button
+                onClick={handleSubmit}
+                disabled={
+                  isBorrowing ||
+                  !book ||
+                  quantity <= 0 ||
+                  !dueDate ||
+                  book?.copies === 0
+                }
+                className="bg-blue-600 hover:bg-blue-700 text-white"
+              >
+                {isBorrowing ? "Borrowing..." : "Borrow"}
+              </Button>
+              <Button
+                variant="ghost"
+                onClick={() => navigate(-1)}
+                disabled={isBorrowing}
+              >
+                Cancel
+              </Button>
+            </div>
+          </>
+        )}
+      </div>
+    </section>
   );
 };
 

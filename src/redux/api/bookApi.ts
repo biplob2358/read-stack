@@ -19,6 +19,15 @@ export const bookApi = baseApi.injectEndpoints({
         data: IBook;
       }) => response.data,
     }),
+    getRecentBooks: builder.query<IBook[], void>({
+      query: () => "books/new",
+      transformResponse: (response: {
+        success: boolean;
+        message: string;
+        data: IBook[];
+      }) => response.data,
+      providesTags: ["Books"],
+    }),
     createBook: builder.mutation<IBook, Partial<IBook>>({
       query: (book) => ({
         url: "books",
@@ -48,6 +57,7 @@ export const bookApi = baseApi.injectEndpoints({
 export const {
   useGetBooksQuery,
   useGetBookQuery,
+  useGetRecentBooksQuery,
   useCreateBookMutation,
   useUpdateBookMutation,
   useDeleteBookMutation,
