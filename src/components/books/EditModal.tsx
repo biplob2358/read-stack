@@ -13,7 +13,7 @@ import {
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Skeleton } from "../ui/skeleton";
-import { toast } from "sonner"; // ✅ Import toast from Sonner
+import { toast } from "sonner";
 
 interface EditModalProps {
   openEditModal: boolean;
@@ -68,7 +68,7 @@ const EditModal = ({
     }
   }, [openEditModal]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
@@ -146,15 +146,29 @@ const EditModal = ({
                   >
                     {field}
                   </label>
-                  <Input
-                    id={field}
-                    name={field}
-                    placeholder={field}
-                    value={(formData as any)[field]}
-                    onChange={handleChange}
-                    type={field === "copies" ? "number" : "text"}
-                    disabled={isUpdating}
-                  />
+
+                  {field === "description" ? (
+                    <textarea
+                      id={field}
+                      name={field}
+                      placeholder={field}
+                      value={(formData as any)[field]}
+                      onChange={handleChange}
+                      disabled={isUpdating}
+                      rows={4}
+                      className="w-full rounded-md border border-gray-300 px-3 py-2 resize-none focus:outline-none focus:ring-2 focus:ring-dark-500"
+                    />
+                  ) : (
+                    <Input
+                      id={field}
+                      name={field}
+                      placeholder={field}
+                      value={(formData as any)[field]}
+                      onChange={handleChange}
+                      type={field === "copies" ? "number" : "text"}
+                      disabled={isUpdating}
+                    />
+                  )}
                 </div>
               ))}
 

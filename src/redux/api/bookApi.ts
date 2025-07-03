@@ -18,6 +18,7 @@ export const bookApi = baseApi.injectEndpoints({
         message: string;
         data: IBook;
       }) => response.data,
+      providesTags: ["Books"],
     }),
     getRecentBooks: builder.query<IBook[], void>({
       query: () => "books/new",

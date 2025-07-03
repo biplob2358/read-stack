@@ -28,7 +28,7 @@ const Hero = () => {
         </div>
         <div className="flex items-center justify-center p-6 mt-10 lg:mt-0 h-72 sm:h-80 lg:h-96 xl:h-[28rem] 2xl:h-[32rem]">
           <img
-            src="/img/banner.svg"
+            src="/img/banner1.svg"
             alt="Library Banner"
             className="object-contain h-full"
           />

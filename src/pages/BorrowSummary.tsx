@@ -6,8 +6,8 @@ export default function BorrowSummary() {
   const summaries = data?.data || [];
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 px-4 py-10">
-      <div className="w-full max-w-4xl bg-white p-6 rounded shadow-md">
+    <div className="flex flex-col items-center  min-h-screen bg-gray-100 px-4 py-10">
+      <div className="w-full container  bg-white p-6 rounded shadow-md">
         <h1 className="text-2xl font-bold mb-4">Borrow Summary</h1>
 
         {isLoading ? (

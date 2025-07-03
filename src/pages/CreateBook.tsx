@@ -20,14 +20,17 @@ export default function CreateBook() {
   const navigate = useNavigate();
   const [createBook, { isLoading }] = useCreateBookMutation();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, checked } = e.target;
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
+    const { name, value, type } = e.target as HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement;
 
-    if (name === "available") {
+    if (name === "available" && type === "checkbox") {
+      const checked = (e.target as HTMLInputElement).checked;
       setFormData((prev) => ({
         ...prev,
         available: checked,
-        copies: checked ? prev.copies : "0", // if unchecked, set copies to "0"
+        copies: checked ? prev.copies : "0",
       }));
     } else {
       setFormData((prev) => ({
@@ -59,42 +62,56 @@ export default function CreateBook() {
 
       toast.success("Book created successfully!");
       navigate("/books");
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
-      toast.error("Failed to create book.");
+      console.log("🚀 ~ handleSubmit ~ error:", error);
+
+      if (
+        error?.data?.error?.errors?.isbn?.kind === "unique" ||
+        (typeof error?.data?.error?.message === "string" &&
+          error.data.error.message.toLowerCase().includes("isbn"))
+      ) {
+        toast.error("ISBN must be unique. This ISBN is already in use.");
+      } else {
+        toast.error("Failed to create book.");
+      }
     }
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 px-4">
+    <div className="flex flex-col items-center justify-center py-10 bg-gray-100 px-4">
       <div className="bg-white p-6 rounded-md shadow-md w-full max-w-md">
         <h1 className="text-2xl font-bold mb-4">Create Book</h1>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block font-medium mb-1">Title</label>
-            <Input
-              name="title"
-              value={formData.title}
-              onChange={handleChange}
-            />
+            <Input name="title" value={formData.title} onChange={handleChange} />
           </div>
 
           <div>
             <label className="block font-medium mb-1">Author</label>
-            <Input
-              name="author"
-              value={formData.author}
-              onChange={handleChange}
-            />
+            <Input name="author" value={formData.author} onChange={handleChange} />
           </div>
 
           <div>
             <label className="block font-medium mb-1">Genre</label>
-            <Input
+            <select
               name="genre"
               value={formData.genre}
               onChange={handleChange}
-            />
+              className="w-full border border-gray-300 rounded px-3 py-2"
+              required
+            >
+              <option value="" disabled>
+                Select genre
+              </option>
+              <option value="FICTION">FICTION</option>
+              <option value="NON_FICTION">NON_FICTION</option>
+              <option value="SCIENCE">SCIENCE</option>
+              <option value="HISTORY">HISTORY</option>
+              <option value="BIOGRAPHY">BIOGRAPHY</option>
+             <option value="FANTASY">FANTASY</option>
+            </select>
           </div>
 
           <div>
@@ -104,10 +121,13 @@ export default function CreateBook() {
 
           <div>
             <label className="block font-medium mb-1">Description</label>
-            <Input
+            <textarea
               name="description"
               value={formData.description}
               onChange={handleChange}
+              rows={4}
+              className="w-full border border-gray-300 rounded px-3 py-2 resize-none"
+              placeholder="Enter description"
             />
           </div>
 
@@ -130,6 +150,7 @@ export default function CreateBook() {
               type="checkbox"
               checked={formData.available}
               onChange={handleChange}
+              className="h-4 w-4"
             />
             <label htmlFor="available">Available</label>
           </div>

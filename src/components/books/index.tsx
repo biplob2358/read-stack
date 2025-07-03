@@ -13,6 +13,7 @@ import { Button } from "../../components/ui/button";
 import EditModal from "./EditModal";
 import DeleteModal from "./DeleteModal";
 import { useState } from "react";
+import { Skeleton } from "../ui/skeleton";
 
 const BooksTable = () => {
   const navigate = useNavigate();
@@ -29,7 +30,9 @@ const BooksTable = () => {
   const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
 
   const modalRoute = location.pathname;
-  const editId = modalRoute.startsWith("/edit-book/") ? modalRoute.split("/edit-book/")[1] : null;
+  const editId = modalRoute.startsWith("/edit-book/")
+    ? modalRoute.split("/edit-book/")[1]
+    : null;
 
   const handleEdit = (id: string) => navigate(`/edit-book/${id}`);
   const handleBorrow = (id: string) => navigate(`/borrow/${id}`);
@@ -38,12 +41,25 @@ const BooksTable = () => {
     setOpenDeleteModal(true);
   };
 
-  if (isLoading) return <p className="text-center mt-10">Loading...</p>;
-  if (error) return <p className="text-red-500 text-center mt-10">Failed to load books.</p>;
+  if (isLoading)
+    return (
+      <div className="space-y-3 min-h-screen flex items-center justify-center">
+        <Skeleton className="h-8 w-full rounded-md" />
+        <Skeleton className="h-8 w-full rounded-md" />
+        <Skeleton className="h-8 w-full rounded-md" />
+        <Skeleton className="h-8 w-full rounded-md" />
+        <Skeleton className="h-8 w-full rounded-md" />
+        <Skeleton className="h-8 w-1/2 rounded-md" />
+      </div>
+    );
+  if (error)
+    return (
+      <p className="text-red-500 text-center mt-10">Failed to load books.</p>
+    );
 
   return (
-    <div className="p-4 min-h-screen container mx-auto">
-      <h2 className="text-2xl font-bold mb-4">📚 All Books</h2>
+    <div className="p-4 min-h-[700px] container mx-auto">
+      <h2 className="text-2xl font-bold mb-4"> All Books</h2>
 
       <div className="w-full overflow-x-auto">
         <table className="w-full min-w-[700px] table-auto border">
@@ -60,7 +76,11 @@ const BooksTable = () => {
           </thead>
           <tbody>
             {data?.data.map((book: IBook) => (
-              <tr key={book._id}>
+              <tr
+                key={book._id}
+                onClick={() => navigate(`/books/${book._id}`)}
+                className="cursor-pointer hover:bg-gray-100 transition"
+              >
                 <td className="p-2 border">{book.title}</td>
                 <td className="p-2 border">{book.author}</td>
                 <td className="p-2 border">{book.genre}</td>
@@ -73,28 +93,31 @@ const BooksTable = () => {
                     <span className="text-red-600 font-medium">No</span>
                   )}
                 </td>
-                <td className="p-2 border">
+                <td
+                  className="p-2 border"
+                  onClick={(e) => e.stopPropagation()} // Prevent row click from triggering
+                >
                   <div className="flex space-x-2 justify-center">
                     <Button
                       onClick={() => handleEdit(book._id)}
-                      className="bg-green-400 hover:bg-green-500 text-white"
+                      className="bg-green-400 hover:bg-green-500 text-white hover:text-white"
                       variant="ghost"
                     >
                       Edit
                     </Button>
                     <Button
-                      onClick={() => handleDelete(book._id)}
-                      className="bg-red-400 hover:bg-red-500 text-white"
-                      variant="ghost"
-                    >
-                      Delete
-                    </Button>
-                    <Button
                       onClick={() => handleBorrow(book._id)}
-                      className="bg-blue-400 hover:bg-blue-500 text-white"
+                      className="bg-blue-400 hover:bg-blue-500 text-white hover:text-white"
                       variant="ghost"
                     >
                       Borrow
+                    </Button>
+                    <Button
+                      onClick={() => handleDelete(book._id)}
+                      className="bg-red-400 hover:bg-red-500 text-white hover:text-white"
+                      variant="ghost"
+                    >
+                      Delete
                     </Button>
                   </div>
                 </td>
@@ -112,14 +135,19 @@ const BooksTable = () => {
         />
         <PaginationContent>
           {pages.map((p) => (
-            <PaginationItem key={p} className={page === p ? "font-bold underline" : ""}>
+            <PaginationItem
+              key={p}
+              className={page === p ? "font-bold underline" : ""}
+            >
               <PaginationLink onClick={() => setPage(p)}>{p}</PaginationLink>
             </PaginationItem>
           ))}
         </PaginationContent>
         <PaginationNext
           onClick={page === totalPages ? undefined : () => setPage(page + 1)}
-          className={page === totalPages ? "pointer-events-none opacity-50" : ""}
+          className={
+            page === totalPages ? "pointer-events-none opacity-50" : ""
+          }
         />
       </Pagination>
 

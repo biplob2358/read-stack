@@ -4,6 +4,7 @@ import { Button } from "../../components/ui/button";
 import { useNavigate } from "react-router";
 import { useState } from "react";
 import DeleteModal from "./DeleteModal";
+import { Skeleton } from "../ui/skeleton";
 
 const NewBooks = () => {
   const navigate = useNavigate();
@@ -15,7 +16,14 @@ const NewBooks = () => {
     setDeleteTargetId(id);
     setOpenDeleteModal(true);
   };
-  if (isLoading) return <p className="text-center mt-10">Loading...</p>;
+  if (isLoading)
+    return (
+      <div className="space-y-3">
+        {[...Array(3)].map((_, i) => (
+          <Skeleton key={i} className="h-8 w-full" />
+        ))}
+      </div>
+    );
   if (error)
     return (
       <p className="text-center text-red-500 mt-10">
@@ -29,7 +37,7 @@ const NewBooks = () => {
         <h2 className="text-2xl font-bold mb-4">🆕 Recently Added Books</h2>
         <Button
           onClick={() => navigate("/create-book")}
-          className="bg-blue-500 hover:bg-blue-600 text-white"
+         
         >
           Add New
         </Button>
@@ -46,41 +54,49 @@ const NewBooks = () => {
               <th className="p-2 border">Actions</th>
             </tr>
           </thead>
-          <tbody>
-            {books?.map((book: IBook) => (
-              <tr key={book._id}>
-                <td className="p-2 border">{book.title}</td>
-                <td className="p-2 border">{book.author}</td>
-                <td className="p-2 border">{book.genre}</td>
-                <td className="p-2 border">{book.isbn}</td>
-                <td className="p-2 border">
-                  <div className="flex space-x-2 justify-center">
-                    <Button
-                      onClick={() => navigate(`/edit-book/${book._id}`)}
-                      className="bg-green-400 hover:bg-green-500 text-white"
-                      variant="ghost"
-                    >
-                      Edit
-                    </Button>
-                    <Button
-                      onClick={() => navigate(`/borrow/${book._id}`)}
-                      className="bg-blue-400 hover:bg-blue-500 text-white"
-                      variant="ghost"
-                    >
-                      Borrow
-                    </Button>
-                    <Button
-                      onClick={() => handleDelete(book._id)}
-                      className="bg-red-400 hover:bg-red-500 text-white"
-                      variant="ghost"
-                    >
-                      Delete
-                    </Button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
+        <tbody>
+  {books?.map((book: IBook) => (
+    <tr
+      key={book._id}
+      className="cursor-pointer hover:bg-gray-100 transition"
+      onClick={() => navigate(`/books/${book._id}`)}
+    >
+      <td className="p-2 border">{book.title}</td>
+      <td className="p-2 border">{book.author}</td>
+      <td className="p-2 border">{book.genre}</td>
+      <td className="p-2 border">{book.isbn}</td>
+      <td
+        className="p-2 border"
+        onClick={(e) => e.stopPropagation()} // Prevent row navigation when clicking inside buttons
+      >
+        <div className="flex space-x-2 justify-center">
+          <Button
+            onClick={() => navigate(`/edit-book/${book._id}`)}
+            className="bg-green-400 hover:bg-green-500 text-white hover:text-white"
+            variant="ghost"
+          >
+            Edit
+          </Button>
+          <Button
+            onClick={() => navigate(`/borrow/${book._id}`)}
+            className="bg-blue-400 hover:bg-blue-500 text-white hover:text-white"
+            variant="ghost"
+          >
+            Borrow
+          </Button>
+          <Button
+            onClick={() => handleDelete(book._id)}
+            className="bg-red-400 hover:bg-red-500 text-white hover:text-white"
+            variant="ghost"
+          >
+            Delete
+          </Button>
+        </div>
+      </td>
+    </tr>
+  ))}
+</tbody>
+
         </table>
       </div>
       {openDeleteModal && deleteTargetId && (
