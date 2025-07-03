@@ -9,7 +9,7 @@ const Navbar = () => {
       <div className="container mx-auto px-4 py-3 flex items-center justify-between">
         <Link to="/" className="text-xl font-bold text-blue-700">
           <img
-            src="/public/img/logo.svg"
+            src="/img/logo.svg"
             alt="ReadStack Logo"
             className="h-10 w-10 inline-block mr-2"
           />

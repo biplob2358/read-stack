@@ -9,7 +9,7 @@ const Footer = () => {
             className="flex justify-center space-x-3 lg:justify-start items-center"
           >
             <img
-              src="/public/img/logo.svg"
+              src="/img/logo.svg"
               alt="ReadStack Logo"
               className="h-16 w-16 inline-block mr-2"
             />
@@ -91,7 +91,7 @@ const Footer = () => {
               <a
                 href="#"
                 aria-label="Facebook"
-                className="text-gray-600 hover:text-blue-600"           
+                className="text-gray-600 hover:text-blue-600"
                 rel="noopener noreferrer"
               >
                 <svg
